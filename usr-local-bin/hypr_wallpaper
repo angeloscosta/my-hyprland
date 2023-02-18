@@ -1,0 +1,54 @@
+#!/usr/bin/env sh
+
+dir="$HOME/Pictures/Wallpaper/Both/"
+
+kill_previous_instances() {
+  #script_name=$(basename "$0")
+  script_name="sh"
+  for pid in $(pidof -x "$script_name"); do
+    if [ "$pid" != $$ ]; then
+      kill -15 "$pid"
+    fi
+  done
+}
+
+change_wallpaper() {
+
+  #period="$(gammastep -l -23.2:-45.9 -p)"
+  #dunstify "$period"
+  if gammastep -p | grep -i -q "day"; then
+      dir2="~/Pictures/Wallpaper/Daytime"
+  else
+      dir2="~/Pictures/Wallpaper/Nighttime"
+  fi
+
+  # Replace last session wallpaper
+  image=$(find $dir $dir2 -type f | shuf -n 1)
+  echo -ne "preload = $image\nwallpaper = eDP-1,$image\nwallpaper = HDMI-A-1,$image\n" > ~/.config/hypr/hyprpaper.conf
+  
+  if [[ `pidof hyprpaper` ]]; then
+	  hyprctl hyprpaper unload all
+	  hyprctl hyprpaper preload $image
+	  #hyprctl hyprpaper wallpaper ,$image
+    hyprctl hyprpaper wallpaper eDP-1,$image
+	  hyprctl hyprpaper wallpaper HDMI-A-1,$image
+
+    # Preservers last session wallpaper
+    #image=$(find ~/Pictures/Wallpaper/shvedes -type f | shuf -n 1)
+    #echo -ne "preload = $image\nwallpaper = ,$image\n" > ~/.config/hypr/hyprpaper.conf
+  else
+	  hyprpaper &> /dev/null
+  fi
+}
+
+#
+#if [[ "$1" == "--shuf" ]]; then 
+#fi
+
+kill_previous_instances
+while true; do
+  change_wallpaper
+  sleep 600
+done
+exit
+

@@ -1,0 +1,135 @@
+{
+    "position": "top", 
+    "height": 20,
+    "modules-left": ["custom/menu", "wlr/workspaces", "custom/media", "mpd"],
+    "modules-right": ["pulseaudio", "battery", "network", "custom/date", "clock", "custom/power"],
+
+	"custom/menu": {
+    	"format": "{}",
+		"on-click": "~/.config/rofi/bin/launcher-corner"
+	},
+	"wlr/workspaces": {
+		"on-click": "activate",
+		"disable-scroll": true,
+		"disable-click": false,
+		"all-outputs": true,
+		"format": "{icon}",
+		"sort-by-number": true,
+		"sort-by-coordinates": false,
+		"sort-by-name": false,
+		"active-only": false,
+	 	"persistent_workspaces": {
+	 		"1": [],
+	 		"2": [],
+	 		"3": [],
+	 		"4": [],
+	 		"5": [],
+	 		"6": [],
+	 		"7": [],
+	 		"8": [],
+	 		"9": [],
+	 		"10": []
+		},
+        "format-icons": {
+			"1": "",
+			"2": "",
+			"3": "",
+			"4": "",
+			"5": "",
+			"6": "漣",
+			"7": "",
+			"8": "",
+			"9": "",
+			"10": "ﳴ"
+         }
+    },
+	"custom/media": {
+		"format": "{icon}{}",
+		"return-type": "json",
+		"format-icons": {
+			"Playing": " ",
+			"Paused": " "
+		},
+		"max-length":70,
+		"exec": "playerctl -a metadata --format '{\"text\": \"{{playerName}}: {{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+		"on-click": "playerctl play-pause"
+	},
+	"mpd": {
+		"format": "<span color=\"#c8ccd4\">{elapsedTime:%M:%S} / {totalTime:%M:%S}</span>   {artist} - {title}",
+		"format-disconnected": "Disconnected",
+		"format-stopped": "",
+		"interval": 10,
+		"on-click": "/usr/local/bin/music",
+		"consume-icons": {
+			"on": " "
+		},
+		"random-icons": {
+			"off": "<span color=\"#f53c3c\"></span> ",
+			"on": " "
+		},
+		"repeat-icons": {
+			"on": " "
+		},
+		"single-icons": {
+			"on": "1 "
+		},
+		"state-icons": {
+			"paused": "",
+			"playing": ""
+		},
+		"tooltip-format": "MPD (connected)",
+		"tooltip-format-disconnected": "MPD (disconnected)"
+	},
+
+	"pulseaudio": {
+		"format": "{icon}  <span color=\"#c8ccd4\">{volume}%</span>",
+        "format-muted": "  Muted",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+	"battery": {
+		"states": {
+			   "warning": 30,
+			   "critical": 15
+		},
+	"interval": 60,
+	"format": "{icon}  <span color=\"#c8ccd4\">{capacity}%</span>",
+	"format-charging": " charging: {capacity}%",
+	"format-plugged": "{capacity}%",
+	"format-alt": "{time}  {icon}",
+	"format-full": " Full",
+	"full-at": 98,
+	"format-icons": [" ", " ", " ", " ", " "]
+	},
+	"network": {
+		"interval": 10,
+		"format-wifi": "直 <span color=\"#c8ccd4\">{essid}</span>",
+		"format-ethernet": "歷 <span color=\"#c8ccd4\"> {ifname}</span>",
+		"format-linked": "轢  {ifname} (No IP) ",
+		"format-disconnected": "轢  Disconnected",
+		"format-alt": "<span color=\"#c8ccd4\"> {bandwidthDownBits} - {bandwidthUpBits} </span>",
+		"tooltip-format": "<span color=\"#c8ccd4\"> {ifname}: {ipaddr}/{cidr} </span>"
+	},
+	"custom/date": {
+    	"format": " {}",
+		"interval": 3600,
+		"exec": "~/.config/hypr/bin/waybar-date.sh"
+	},
+	"clock": {
+		"format": " {:%H:%M}",
+        "tooltip-format": "<tt><big>{:%Y %B}</big></tt>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%b %d, %G}"
+	},
+	"custom/power": {
+		"format": "",
+		"on-click": "~/.config/rofi/bin/hyprland_powermenu_no_confirm"
+	}
+}

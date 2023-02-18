@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+
+## Copyright (C) 2020-2022 Aditya Shakya <adi1090x@gmail.com>
+## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
+
+## Script to take screenshots with maim
+
+time=`date +%Y-%m-%d-%H-%M-%S`
+#geometry=`xrandr | grep 'current' | head -n1 | cut -d',' -f2 | tr -d '[:blank:],current'`
+dir="`xdg-user-dir PICTURES`/Screenshots"
+file="Screenshot_${time}.png"
+
+# Commands
+notify_cmd_shot="dunstify -u low --replace=699"
+
+# notify and view screenshot
+notify_view () {
+	#${notify_cmd_shot} "Copied to clipboard."
+	if [[ -e "$dir/$file" ]]; then
+    action=$(${notify_cmd_shot} --action="default,Reply" "Screenshot Saved")
+    case "$action" in
+      "2")
+        #viewnior ${dir}/"$file";;
+        nemo ${dir};;
+    esac
+  echo $action
+	else
+		${notify_cmd_shot} "Screenshot Deleted."
+	fi
+}
+
+# Copy screenshot to clipboard
+copy_shot () {
+	tee "$file" | xclip -selection clipboard -t image/png
+  #grim $file
+}
+
+# countdown
+countdown () {
+	for sec in `seq $1 -1 1`; do
+		dunstify -t 1000 --replace=699 "Taking shot in : $sec"
+		sleep 1
+	done
+}
+
+# take shots
+shotnow () {
+	cd ${dir} && maim -u -f png | copy_shot
+  cd ${dir} && sleep 0.1 && grim $file
+  notify_view
+}
+
+shot5 () {
+	countdown '5'
+	#sleep 1 && cd ${dir} && maim -u -f png | copy_shot
+	cd ${dir} && sleep 0.1 && grim $file
+  notify_view
+}
+
+shot10 () {
+  countdown '10'
+	#sleep 1 && cd ${dir} && maim -u -f png | copy_shot
+  cd ${dir} && sleep 0.1 && grim $file
+  notify_view
+}
+
+shotwin () {
+  location=$(hyprctl -j activewindow | jq -r '. | "\(.at)"' | tr -d '[]')
+  size=$(hyprctl -j activewindow | jq -r '. | "\(.size)"' | tr -d '[]' | tr , x)
+  #dunstify "$location $size"
+  #cd ${dir} && maim -u -f png -i `xdotool getactivewindow` | copy_shot
+  cd ${dir} && sleep 0.1 && grim -g "$location $size" $file
+	notify_view
+}
+
+shotarea () {
+	#cd ${dir} && maim -u -f png -s -b 2 -c 0.35,0.55,0.85,0.25 -l | copy_shot
+  cd ${dir} && sleep 0.1 && grim -g "$(slurp)" $file	
+  notify_view
+}
+
+if [[ ! -d "$dir" ]]; then
+	mkdir -p "$dir"
+fi
+
+if [[ "$1" == "--now" ]]; then
+	shotnow
+elif [[ "$1" == "--in5" ]]; then
+	shot5
+elif [[ "$1" == "--in10" ]]; then
+	shot10
+elif [[ "$1" == "--win" ]]; then
+	shotwin
+elif [[ "$1" == "--area" ]]; then
+	shotarea
+else
+	echo -e "Available Options : --now --in5 --in10 --win --area"
+fi
+
+exit 0

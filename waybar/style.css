@@ -1,0 +1,132 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: Iosevka Nerd Font;
+    font-size: 15px;
+    font-weight: bold;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: #202021;
+    color: #c8ccd4;
+}
+
+#workspaces {
+	background-color: #2c3038;
+	margin: 5px;
+	margin-left: 10px;
+	border-radius: 10px 10px 10px 10px;
+}
+#workspaces button {
+    padding: 0 10px;
+    color: #c8ccd4;
+}
+
+#workspaces button.active {
+    color: #808080;
+    background-color: #E3D3B5;
+    border-radius: 5px;
+}
+
+#workspaces button:hover {
+	background-color: #2c3038;
+	border-radius: 5px;
+}
+
+#mpd{
+    color: #E3D3B5;
+    background-color: #202021;
+    padding: 0px 10px;
+    margin: 5px 0px;
+}
+
+#custom-date, #clock, #battery, #pulseaudio, #network {
+	background-color: #202021;
+	padding: 0px 15px;
+	margin: 5px 0px;
+}
+
+#custom-date {
+	color: #8fbcbb;
+}
+
+#custom-media {
+    color: #c8ccd4;
+    background-color: #202021;
+	border-radius: 5px;
+	margin-right: 0px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 10px;
+	padding: 0px 10px;
+}
+
+#custom-menu {
+    color: #E3D3B5;
+    background-color: #202021;
+	border-radius: 5px;
+	margin-right: 0px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 10px;
+	padding: 0px 10px;
+    font-family: archcraft;
+    font-weight: normal;
+    font-size: 19px;
+}
+
+#custom-power {
+	color: #c8ccd4;
+	background-color: #202021;
+	border-radius: 5px;
+	margin-right: 10px;
+	margin-left: 0px;
+	padding: 0px 10px;
+}
+
+#clock {
+    color: #bf616a;
+    background-color: #2c3038;
+    border-radius: 10px 10px 10px 10px;
+    margin-right: 0px;
+    font-size: 17px;
+}
+
+#battery {
+    color: #a3be8c;
+}
+
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: black;
+    }
+}
+
+#battery.charging {
+    color: #a3be8c;
+}
+
+#battery.critical:not(.charging) {
+    background-color: #f53c3c;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#network {
+	color: #a3be8c;
+}
+
+#network.disconnected {
+    color: #d08770;
+}
+
+#pulseaudio {
+	color: #ebcb8b;
+	border-radius: 5px 0px 0px 5px;
+}
